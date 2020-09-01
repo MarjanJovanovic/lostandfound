@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Item {
     private Boolean isLost;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
-    private List<Image> images;
+    private List<Image> images = new ArrayList<>();
 
     @ManyToOne
     private Category category;

@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemRepo extends JpaRepository<Item, Long> {
 
-    @Override
-    <S extends Item> Page<S> findAll(Example<S> example, Pageable pageable);
+//    @Override
+//    <S extends Item> Page<S> findAll(Example<S> example, Pageable pageable);
 }

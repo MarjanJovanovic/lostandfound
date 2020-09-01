@@ -1,5 +1,6 @@
 package com.moki.lostandfound.controller;
 
+import com.moki.lostandfound.dto.ItemRequestDto;
 import com.moki.lostandfound.dto.ItemResponseDto;
 import com.moki.lostandfound.model.Item;
 import com.moki.lostandfound.service.ItemService;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/item/*")
+@CrossOrigin(value = "http://localhost:3000")
 public class ItemController {
 
     @Autowired
@@ -26,8 +28,8 @@ public class ItemController {
     }
 
     @PostMapping("save")
-    public ItemResponseDto save(@RequestBody Item item){
-        return itemService.save(item);
+    public ItemResponseDto save(@RequestBody ItemRequestDto itemRequestDto){
+        return itemService.save(itemRequestDto);
     }
 
 }
