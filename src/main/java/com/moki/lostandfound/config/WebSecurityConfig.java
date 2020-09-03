@@ -76,16 +76,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {  //The configure(HttpSecurity) method defines which URL paths should be secured and which should not.
         http.cors().and()
+                .csrf().disable()
                 .authenticationProvider(authProvider)
-                .cors().and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/image/upload").permitAll()
                 .antMatchers("/city/*").permitAll()   //hasAuthority("USER") samo za usere
                 .antMatchers("/item/*").hasAuthority("USER") // samo za admine
                 .antMatchers("/user/*").hasAuthority("ADMIN") // samo za admine
-
                 .and()
                 .httpBasic();
     }
@@ -95,6 +95,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**");
     }
 }

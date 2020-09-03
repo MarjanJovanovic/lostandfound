@@ -1,7 +1,8 @@
-package com.moki.lostandfound.service;
+package com.moki.lostandfound.service.impl;
 
 import com.moki.lostandfound.dao.RoleRepo;
 import com.moki.lostandfound.model.Role;
+import com.moki.lostandfound.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
