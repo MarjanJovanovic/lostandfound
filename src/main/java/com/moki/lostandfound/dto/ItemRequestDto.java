@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ItemRequestDto {
     private Long cityId;
-    private Long streetId;
     private Long categoryId;
     private Boolean isLost;
     private String name;

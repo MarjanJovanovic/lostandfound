@@ -25,5 +25,8 @@ public class Item {
     private Category category;
 
     @ManyToOne
-    private Street street;
+    private City city;
+
+    @ManyToOne
+    private User user;
 }

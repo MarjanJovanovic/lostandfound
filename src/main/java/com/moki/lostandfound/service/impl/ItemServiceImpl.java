@@ -8,7 +8,6 @@ import com.moki.lostandfound.model.*;
 import com.moki.lostandfound.service.CategoryService;
 import com.moki.lostandfound.service.CityService;
 import com.moki.lostandfound.service.ItemService;
-import com.moki.lostandfound.service.StreetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,22 +25,17 @@ public class ItemServiceImpl implements ItemService {
     private CityService cityService;
 
     @Autowired
-    private StreetService streetService;
-
-    @Autowired
     private CategoryService categoryService;
 
     @Override
     public ItemResponseDto save(ItemRequestDto itemRequestDto) {
 
         City city = cityService.findById(itemRequestDto.getCityId());
-        Street street = streetService.findById(itemRequestDto.getStreetId());
         Category category = categoryService.findById(itemRequestDto.getCategoryId());
 
         Item item = new Item();
 
         item.setCity(city);
-        item.setStreet(street);
         item.setCategory(category);
         item.setDescription(itemRequestDto.getDescription());
         item.setIsLost(itemRequestDto.getIsLost());

@@ -16,5 +16,5 @@ public class City {
 
 
     @ManyToMany
-    public List<Street> streets;
+    public List<Item> items;
 }

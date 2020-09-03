@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,5 +21,8 @@ public class User {
     private String phoneNumber;
 
     @ManyToMany
-    private List<Role> roles;
+    private Set<Role> roles;
+
+    @OneToMany
+    private List<Item> items;
 }
