@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/image/upload").permitAll()
                 .antMatchers("/city/*").permitAll()   //hasAuthority("USER") samo za usere
-                .antMatchers("/item/*").hasAuthority("USER") // samo za admine
+                .antMatchers("/item/*").permitAll() // samo za admine
                 .antMatchers("/user/*").hasAuthority("ADMIN") // samo za admine
                 .and()
                 .httpBasic();

@@ -9,6 +9,7 @@ import com.moki.lostandfound.service.CategoryService;
 import com.moki.lostandfound.service.CityService;
 import com.moki.lostandfound.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private CategoryService categoryService;
 
+    @Value("${storage.directory.path}")
+    private String imageStorageDirPath;
+
     @Override
     public ItemResponseDto save(ItemRequestDto itemRequestDto) {
 
@@ -40,10 +44,14 @@ public class ItemServiceImpl implements ItemService {
         item.setDescription(itemRequestDto.getDescription());
         item.setIsLost(itemRequestDto.getIsLost());
         item.setName(itemRequestDto.getName());
+        Image image = new Image();
+        image.setFilename(imageStorageDirPath + itemRequestDto.getImageFileName());
+        item.setImages(List.of(image));
 
         System.out.println("saving new item");
 
         return mapToDto(itemRepo.save(item));
+
     }
 
     @Override
@@ -85,7 +93,7 @@ public class ItemServiceImpl implements ItemService {
         for (Image image : item.getImages()) {
             ImageResponseDto imageResponseDto = new ImageResponseDto();
             imageResponseDto.setId(image.getId());
-            imageResponseDto.setUrl(image.getUrl());
+            imageResponseDto.setUrl(image.getFilename());
             imageList.add(imageResponseDto);
         }
         itemResponseDto.setImages(imageList);
