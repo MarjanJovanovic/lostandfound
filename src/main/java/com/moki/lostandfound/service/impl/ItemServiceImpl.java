@@ -34,8 +34,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemResponseDto save(ItemRequestDto itemRequestDto) {
 
-        City city = cityService.findById(itemRequestDto.getCityId());
-        Category category = categoryService.findById(itemRequestDto.getCategoryId());
+        City city = cityService.getById(itemRequestDto.getCityId());
+        Category category = categoryService.getById(itemRequestDto.getCategoryId());
 
         Item item = new Item();
 

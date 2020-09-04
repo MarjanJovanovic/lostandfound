@@ -1,6 +1,7 @@
 package com.moki.lostandfound.service.impl;
 
 import com.moki.lostandfound.dao.CityRepo;
+import com.moki.lostandfound.dto.CityResponseDto;
 import com.moki.lostandfound.model.City;
 import com.moki.lostandfound.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -16,17 +18,26 @@ public class CityServiceImpl implements CityService {
     private CityRepo cityRepo;
 
     @Override
-    public City save(City city) {
-        return cityRepo.save(city);
+    public CityResponseDto save(City city) {
+        return mapToDto(cityRepo.save(city));
+    }
+
+    private CityResponseDto mapToDto(City city) {
+        return new CityResponseDto(city.getId(), city.getName());
     }
 
     @Override
-    public List<City> findAll() {
-        return cityRepo.findAll();
+    public List<CityResponseDto> findAll() {
+        return cityRepo.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
     @Override
-    public City findById(Long id) {
+    public CityResponseDto findById(Long id) {
+        return mapToDto(this.getById(id));
+    }
+
+    @Override
+    public City getById(Long id) {
         Optional<City> cityOptional = cityRepo.findById(id);
         if (cityOptional.isPresent()){
             return cityOptional.get();
@@ -35,10 +46,10 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public City update(City city) {
+    public CityResponseDto update(City city) {
         Optional<City> cityOptional = cityRepo.findById(city.getId());
         if (cityOptional.isPresent()){
-            return cityRepo.save(city);
+            return mapToDto(cityRepo.save(city));
         }
         throw new RuntimeException("Updated city with the following id doesn't exist: " + city.getId());
     }
