@@ -4,12 +4,20 @@ import com.moki.lostandfound.dao.ItemRepo;
 import com.moki.lostandfound.dto.ImageResponseDto;
 import com.moki.lostandfound.dto.ItemRequestDto;
 import com.moki.lostandfound.dto.ItemResponseDto;
-import com.moki.lostandfound.model.*;
+import com.moki.lostandfound.model.Category;
+import com.moki.lostandfound.model.City;
+import com.moki.lostandfound.model.Image;
+import com.moki.lostandfound.model.Item;
 import com.moki.lostandfound.service.CategoryService;
 import com.moki.lostandfound.service.CityService;
 import com.moki.lostandfound.service.ItemService;
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,8 +64,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemResponseDto> findAll() {
-        return mapItemsToDto(itemRepo.findAll());
+    public Page<ItemResponseDto> findAll(Predicate predicate, Pageable pageable) {
+        Page<Item> itemsPage = itemRepo.findAll(predicate, pageable);
+        List<ItemResponseDto> itemResponseDtos = mapItemsToDto(itemsPage.getContent());
+        PageRequest newPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return new PageImpl<>(itemResponseDtos, newPageable, itemsPage.getTotalPages());
     }
 
     @Override

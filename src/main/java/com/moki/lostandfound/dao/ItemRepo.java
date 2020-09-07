@@ -1,20 +1,22 @@
 package com.moki.lostandfound.dao;
 
 import com.moki.lostandfound.model.Item;
+import com.moki.lostandfound.model.QItem;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.StringPath;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.SingleValueBinding;
 
 import java.util.List;
 
 public interface ItemRepo extends JpaRepository<Item, Long>,
-        QuerydslPredicateExecutor<ItemRepo>, QuerydslBinderCustomizer<QItemRepo> {
+        QuerydslPredicateExecutor<Item>, QuerydslBinderCustomizer<QItem> {
 
     @Override
-    default void customize(QuerydslBindings bindings, QItemRepo qItemRepo) {
+    default void customize(QuerydslBindings bindings, QItem qItem) {
         bindings.bind(String.class)
                 .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
     }

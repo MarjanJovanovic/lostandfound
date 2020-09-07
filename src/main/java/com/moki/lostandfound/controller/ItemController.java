@@ -5,16 +5,15 @@ import com.moki.lostandfound.dto.ItemRequestDto;
 import com.moki.lostandfound.dto.ItemResponseDto;
 import com.moki.lostandfound.model.Item;
 import com.moki.lostandfound.service.ItemService;
-import com.moki.lostandfound.service.impl.ItemServiceImpl;
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
-import java.util.function.Predicate;
 
 @RestController
 @RequestMapping("/item/*")
@@ -32,7 +31,7 @@ public class ItemController {
     @GetMapping("/findAll")
     public Page<ItemResponseDto> findAll(@QuerydslPredicate(root = Item.class, bindings = ItemRepo.class) Predicate predicate,
                                          @PageableDefault(size = 20) Pageable pageable) {
-        return ItemServiceImpl.findAll(predicate, pageable);
+        return itemService.findAll(predicate, pageable);
     }
 
     @GetMapping("findById")
