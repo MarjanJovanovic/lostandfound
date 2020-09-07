@@ -13,4 +13,5 @@ public interface ItemService {
     public Item update(Item item);
     public void delete(Item item);
 
+    List<ItemResponseDto> filterByCityAndCategory(Long cityId, Long categoryId);
 }

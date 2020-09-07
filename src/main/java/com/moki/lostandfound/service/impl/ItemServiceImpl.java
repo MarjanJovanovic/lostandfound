@@ -28,8 +28,8 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private CategoryService categoryService;
 
-    @Value("${storage.directory.path}")
-    private String imageStorageDirPath;
+    @Value("${storage.server.path}")
+    private String imageServerPath;
 
     @Override
     public ItemResponseDto save(ItemRequestDto itemRequestDto) {
@@ -45,7 +45,8 @@ public class ItemServiceImpl implements ItemService {
         item.setIsLost(itemRequestDto.getIsLost());
         item.setName(itemRequestDto.getName());
         Image image = new Image();
-        image.setFilename(imageStorageDirPath + itemRequestDto.getImageFileName());
+        image.setItem(item);
+        image.setFilename(imageServerPath + itemRequestDto.getImageFileName());
         item.setImages(List.of(image));
 
         System.out.println("saving new item");
@@ -69,6 +70,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public List<ItemResponseDto> filterByCityAndCategory(Long cityId, Long categoryId) {
+        return mapItemsToDto(itemRepo.findByCityAndCategory(cityId, categoryId));
+    }
+
+    @Override
     public Item update(Item item) {
         Optional<Item> itemOptional = itemRepo.findById(item.getId());
         if (itemOptional.isPresent()) {
@@ -82,12 +88,16 @@ public class ItemServiceImpl implements ItemService {
         itemRepo.delete(item);
     }
 
+
     private ItemResponseDto mapToDto(Item item) {
         ItemResponseDto itemResponseDto = new ItemResponseDto();
         itemResponseDto.setDescription(item.getDescription());
         itemResponseDto.setId(item.getId());
         itemResponseDto.setIsLost(item.getIsLost());
         itemResponseDto.setName(item.getName());
+        itemResponseDto.setCategory(item.getCategory().getName());
+        itemResponseDto.setCity(item.getCity().getName());
+
 
         List<ImageResponseDto> imageList = new ArrayList<>();
         for (Image image : item.getImages()) {
