@@ -80,7 +80,6 @@ public class UserServiceImpl implements UserService {
             System.out.println("AUTHOVAN");
         } else {
             System.out.println("NIJE AUTHOVAN");
-
         }
         response.put("message", "");
         response.put("success", false);
@@ -98,12 +97,12 @@ public class UserServiceImpl implements UserService {
             response.put("type", role.toLowerCase());
         }
         return response;
-
     }
 
     @Override
     public Map<String, String> login(HttpServletRequest req) {
         Map<String, String> response = new HashMap();
+        System.out.println(req.getUserPrincipal().toString());
         if (req.getUserPrincipal() != null && !req.getUserPrincipal().getName().isBlank()) {
             String username = req.getUserPrincipal().getName();
             response.put("success", "true");
@@ -116,7 +115,7 @@ public class UserServiceImpl implements UserService {
         System.out.println("login failed");
 
         response.put("success", "false");
-        response.put("message", "all good");
+        response.put("message", "login failed");
         response.put("type", "0");
         return response;
     }
@@ -128,20 +127,22 @@ public class UserServiceImpl implements UserService {
         if (validate(body)) {
             String username = body.get("username");
             String password = body.get("password");
-            String email = body.get("email");
             String firstName = body.get("firstname");
             String lastName = body.get("lastname");
+            String email = body.get("email");
+            String phone = body.get("phone");
+
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
-            user.setEmail(email);
             user.setName(firstName);
             user.setSurname(lastName);
+            user.setEmail(email);
+            user.setPhoneNumber(phone);
             save(user);
             response.put("success", true);
         }
         return response;
-
     }
 
     @Override
@@ -149,15 +150,15 @@ public class UserServiceImpl implements UserService {
         System.out.println("LOGIN FAIL");
         Map<String, String> response = new HashMap();
         response.put("success", "false");
-        response.put("message", "all good");
+        response.put("message", "login fail");
         response.put("type", "0");
         return response;
     }
 
     private boolean validate(Map<String, String> body) {
         return !body.get("username").isBlank() && !body.get("password").isBlank()
-                && !body.get("email").isBlank() && !body.get("firstname").isBlank()
-                && !body.get("lastname").isBlank();
+                && !body.get("firstname").isBlank() && !body.get("lastname").isBlank()
+                && !body.get("email").isBlank() && !body.get("phone").isBlank();
     }
 
 }

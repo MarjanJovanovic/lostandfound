@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
-            <version>4.2.2</version>
+            <version>4.3.1</version>
         </dependency>
 
     </dependencies>
@@ -80,7 +80,7 @@
                     <dependency>
                         <groupId>com.querydsl</groupId>
                         <artifactId>querydsl-apt</artifactId>
-                        <version>4.2.2</version>
+                        <version>4.3.1</version>
                     </dependency>
                 </dependencies>
                 <executions>

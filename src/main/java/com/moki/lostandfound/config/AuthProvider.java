@@ -33,23 +33,21 @@ public class AuthProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication a) throws AuthenticationException {
         String email = a.getName();
         String password = a.getCredentials().toString();
-        User s = authService.findByEmail(email);
+        User user = authService.findByEmail(email);
 
-        if(s==null){
+        if(user==null){
             throw new BadCredentialsException("BAD CREDENTIALS");
         }
 
         System.out.println("AUTH");
-        if (bCryptPasswordEncoder.matches(password, s.getPassword())) {
-            Set<Role> roles = authService.findByEmail(email).getRoles();
+        if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            Set<Role> roles = user.getRoles();
             List<GrantedAuthority> grantedAuthorities = new ArrayList();
             for (Role r : roles) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(r.getName()));
             }
-
             System.out.println("auth granted");
-            Authentication auth = new UsernamePasswordAuthenticationToken(email, password, grantedAuthorities);
-            return auth;
+            return new UsernamePasswordAuthenticationToken(email, password, grantedAuthorities);
         }
         throw new BadCredentialsException("BAD CREDENTIALS");
 
